@@ -42,7 +42,7 @@ import java.util.concurrent.Executors;
 
 public class Main2Activity extends AppCompatActivity  implements View.OnClickListener{
 
-    Button camera_top, camera_left, camera_bottom, camera_right,button_qrcode,qr_code;
+    Button camera_top, camera_left, camera_bottom, camera_right,button_qrcode,qr_code,button_set,button_reach;
 
 
     ImageView pic;
@@ -114,8 +114,9 @@ public class Main2Activity extends AppCompatActivity  implements View.OnClickLis
         camera_right = findViewById(R.id.camera_right);
         camera_top = findViewById(R.id.camera_top);
         button_qrcode = findViewById(R.id.btn_qrcode);
-        //控制
-
+        //
+        button_set=(Button)findViewById(R.id.button_set);
+        button_reach=(Button)findViewById(R.id.button_reach);
 
 
         //摄像头
@@ -128,6 +129,9 @@ public class Main2Activity extends AppCompatActivity  implements View.OnClickLis
         button_qrcode.setOnClickListener(this);
         qr_code.setOnClickListener(this);
 
+        //
+        button_set.setOnClickListener(this);
+        button_reach.setOnClickListener(this);
         //
         WIFI wifi = new WIFI();
         wifi.Recthread.start();
@@ -269,6 +273,13 @@ public class Main2Activity extends AppCompatActivity  implements View.OnClickLis
             case R.id.qr_code:
                 qrHandler.sendEmptyMessage(10);
                 break;
+            case R.id.button_set:
+                button_set();
+                break;
+            case R.id.button_reach:
+                button_reach();
+                break;
+
             default:
                 break;
         }
@@ -394,6 +405,22 @@ public class Main2Activity extends AppCompatActivity  implements View.OnClickLis
             @Override
             public void run() {
                 cameracommand.postHttp(cameraAddr, 0, 1);  //上
+            }
+        });
+    }
+    private void button_set() {
+        XcApplication.executorServicetor.execute(new Runnable() {
+            @Override
+            public void run() {
+                cameracommand.postHttp(cameraAddr, 32, 0);  //上
+            }
+        });
+    }
+    private void button_reach() {
+        XcApplication.executorServicetor.execute(new Runnable() {
+            @Override
+            public void run() {
+                cameracommand.postHttp(cameraAddr, 33, 0);  //上
             }
         });
     }

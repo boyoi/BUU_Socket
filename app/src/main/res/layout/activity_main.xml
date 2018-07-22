@@ -241,7 +241,7 @@
                 android:id="@+id/buttonbee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="8dp"
@@ -251,7 +251,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonfindway" />
+                 />
         </LinearLayout>
 
         <LinearLayout
@@ -314,26 +314,69 @@
                 app:layout_constraintStart_toEndOf="@+id/buttonconnect"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.662" />
-
-            <Button
-                android:id="@+id/jump_to"
+        </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="108dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg_red"
-                android:text="二维码"
-                app:layout_constraintBottom_toTopOf="@+id/buttonleft"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.954"
-                app:layout_constraintStart_toEndOf="@+id/buttonconnect"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.662" />
-        </LinearLayout>
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/jump_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_bg_red"
+                    android:text="摄像头"
+                    app:layout_constraintBottom_toTopOf="@+id/buttonleft"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.954"
+                    app:layout_constraintStart_toEndOf="@+id/buttonconnect"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.662" />
+                <Button
+                    android:id="@+id/jump_to2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_bg_red"
+                    android:text="摄像头"
+                    app:layout_constraintBottom_toTopOf="@+id/buttonleft"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.954"
+                    app:layout_constraintStart_toEndOf="@+id/buttonconnect"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.662" />
+                <Button
+                    android:id="@+id/jump_to3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_bg_red"
+                    android:text="摄像头"
+                    app:layout_constraintBottom_toTopOf="@+id/buttonleft"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.954"
+                    app:layout_constraintStart_toEndOf="@+id/buttonconnect"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.662" />
+            </LinearLayout>
+
+
 
     </LinearLayout>
 </RelativeLayout>
