@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bkrcl.control_car_video.camerautil.CameraCommandUtil;
 
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button button_alarm;
     Button buttonlight_left_right;
     Button jump_to;
+    Button button_display;
+    Button button_signo;
     TextView textViewId;
     TextView textViewPort;
     EditText editText;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int beeflage=0x01;
     int lightflage=0x01;
     int light_lr_flage = 0x01;
+    int signo_flage = 0x01;
     boolean WIFI_connect_flag = false;
     // i don't known what is it.
     static ExecutorService executorServicetor = Executors.newCachedThreadPool();
@@ -101,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editText = (EditText)findViewById(R.id.editText);
         editText2 = (EditText)findViewById(R.id.editText2);
         jump_to = (Button) findViewById(R.id.jump_to);
+        button_signo = (Button) findViewById(R.id.buttonsigno);
+        button_display = (Button) findViewById(R.id.buttondisplay);
 
         button_con.setOnClickListener(this);
         button_go.setOnClickListener(this);
@@ -115,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button_alarm.setOnClickListener(this);
         buttonlight_left_right.setOnClickListener(this);
         jump_to.setOnClickListener(this);
+        button_signo.setOnClickListener(this);
+        button_display.setOnClickListener(this);
+
         //
         WIFI wifi = new WIFI();
         wifi.Recthread.start();
@@ -197,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+
     @Override
     public void onClick(View view){
         switch (view.getId()){
@@ -213,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonlight_left_right:WIFI.sendData(0X20,light_lr_flage,(light_lr_flage+0x1)%2,0);light_lr_flage=(light_lr_flage+0x1)%2;break;
             case R.id.buttonalarm:
                 Timer timer=new Timer();
-
                 WIFI.sendData(0X10,0x03,0x05,0x14);
                 timer.schedule(new TimerTask(){
                     public void run(){
@@ -224,10 +233,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         WIFI.sendData(0X12,0,0,0);
                         this.cancel();}},400);
             break;
+            case R.id.buttondisplay:
+                Timer timer2=new Timer();
+                WIFI.sendData(0X10,0xff,0x13,0x01);
+                timer2.schedule(new TimerTask(){
+                    public void run(){
+                        WIFI.sendData(0X11,0xff,0x00,0x00);
+                        this.cancel();}},200);
+                timer2.schedule(new TimerTask(){
+                    public void run(){
+                        WIFI.sendData(0X12,0,0,0);
+                        this.cancel();}},400);
+                Toast.makeText(MainActivity.this,"buttondisplay",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonsigno:
+                WIFI.sendSignoData(0x01,signo_flage+0x01,0,0);
+                signo_flage = (signo_flage+0x01)%2;
+                Toast.makeText(MainActivity.this,"buttonsigno",Toast.LENGTH_LONG).show();
+                break;
+
             case R.id.jump_to:
                 Intent intent = new Intent(MainActivity.this, Main2Activity.class);
                 startActivity(intent);
                 break;
+
             default:break;
         }
     }
