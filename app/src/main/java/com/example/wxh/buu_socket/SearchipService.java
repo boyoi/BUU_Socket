@@ -57,6 +57,7 @@ public class SearchipService extends Service {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			if(msg.what ==8)
+
 			{
 				Intent cameraIntent =new Intent();
 				cameraIntent.setAction(Main2Activity.com_broadcase);

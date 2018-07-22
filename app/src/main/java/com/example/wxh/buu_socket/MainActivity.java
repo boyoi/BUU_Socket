@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button jump_to;
     Button button_display;
     Button button_signo;
+    Button button_auto;
     TextView textViewId;
     TextView textViewPort;
     EditText editText;
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int lightflage=0x01;
     int light_lr_flage = 0x01;
     int signo_flage = 0x01;
+    //全自动化声明类
+    connect_socket connect_socket;
+
     boolean WIFI_connect_flag = false;
     // i don't known what is it.
     static ExecutorService executorServicetor = Executors.newCachedThreadPool();
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static String com_broadcase = "com.bkrc.buu";
     CameraCommandUtil cameracommand;
     String cameraAddr;
+
 
     /*建立socket连接*/
     static Socket socket = null;
@@ -107,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         jump_to = (Button) findViewById(R.id.jump_to);
         button_signo = (Button) findViewById(R.id.buttonsigno);
         button_display = (Button) findViewById(R.id.buttondisplay);
+        button_auto=(Button)findViewById(R.id.buttonauto);
 
         button_con.setOnClickListener(this);
         button_go.setOnClickListener(this);
@@ -123,12 +129,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         jump_to.setOnClickListener(this);
         button_signo.setOnClickListener(this);
         button_display.setOnClickListener(this);
+        button_auto.setOnClickListener(this);
 
         //
         WIFI wifi = new WIFI();
         wifi.Recthread.start();
         wifi.setRecData.start();
         Eidtthread.start();
+
+        //实例化类
+        connect_socket = new connect_socket();
+        connect_socket.full_auto.start();
     }
     //得到IP地址
     private String getlocalIP(){
@@ -256,11 +267,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, Main2Activity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.buttonauto:
+                connect_socket.auto_flag=10;
             default:break;
         }
     }
-}
+
+    }
 
 
 
