@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button button_display;
     Button button_signo;
     Button button_auto;
+    Button button_LED;
+    Button button_distance;
     TextView textViewId;
     TextView textViewPort;
     EditText editText;
@@ -54,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //全自动化声明类
     connect_socket connect_socket;
 
+    //声明控制类
+    car_control carControl = new car_control();
+    //
     boolean WIFI_connect_flag = false;
     // i don't known what is it.
     static ExecutorService executorServicetor = Executors.newCachedThreadPool();
@@ -113,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button_signo = (Button) findViewById(R.id.buttonsigno);
         button_display = (Button) findViewById(R.id.buttondisplay);
         button_auto=(Button)findViewById(R.id.buttonauto);
+        button_LED = (Button)findViewById(R.id.buttonLED);
+        button_distance = (Button)findViewById(R.id.buttondistance);
 
         button_con.setOnClickListener(this);
         button_go.setOnClickListener(this);
@@ -130,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button_signo.setOnClickListener(this);
         button_display.setOnClickListener(this);
         button_auto.setOnClickListener(this);
+        button_LED.setOnClickListener(this);
+        button_distance.setOnClickListener(this);
 
         //
         WIFI wifi = new WIFI();
@@ -222,53 +231,73 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view){
         switch (view.getId()){
             case R.id.buttonconnect:connect_OnClick();break;
-            case R.id.buttongo:WIFI.sendData(0x02,80,100,0);break;
-            case R.id.buttonback:WIFI.sendData(0x03,80,100,0);break;
-            case R.id.buttonleft:WIFI.sendData(0x04,80,0,0);break;
-            case R.id.buttonright:WIFI.sendData(0x05,80,0,0);break;
-            case R.id.buttonstop:WIFI.sendData(0x01,0,0,0); break;
-            case R.id.buttonbee:WIFI.sendData(0x30,beeflage,0,0);beeflage = (beeflage+0x1)%2;break;
-            case R.id.buttonlight:WIFI.sendData(0X20,lightflage,lightflage,0);lightflage = (lightflage+0x1)%2;break;
-            case R.id.buttonfindway:WIFI.sendData(0x06,80,0,0);break;
-            case R.id.buttonlightup:WIFI.sendData(0X61,0,0,0);break;
-            case R.id.buttonlight_left_right:WIFI.sendData(0X20,light_lr_flage,(light_lr_flage+0x1)%2,0);light_lr_flage=(light_lr_flage+0x1)%2;break;
+            case R.id.buttongo:
+                carControl.car_go();
+                Toast.makeText(MainActivity.this,"Go",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonback:
+                carControl.car_back();
+                Toast.makeText(MainActivity.this,"Back",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonleft:
+                carControl.car_left();
+                Toast.makeText(MainActivity.this,"Left",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonright:
+                carControl.car_right();
+                Toast.makeText(MainActivity.this,"Right",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonstop:
+                carControl.car_stop();
+                Toast.makeText(MainActivity.this,"Stop",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonbee:
+                carControl.bee();
+                Toast.makeText(MainActivity.this,"Bee",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonlight:
+                carControl.light();
+                Toast.makeText(MainActivity.this,"Light",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonfindway:
+                carControl.findway();
+                Toast.makeText(MainActivity.this,"寻迹",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonlightup:
+                carControl.lightup();
+                Toast.makeText(MainActivity.this,"灯源升档",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttonlight_left_right:
+                carControl.light_left_right();
+                Toast.makeText(MainActivity.this,"开单灯",Toast.LENGTH_LONG).show();
+                break;
             case R.id.buttonalarm:
-                Timer timer=new Timer();
-                WIFI.sendData(0X10,0x03,0x05,0x14);
-                timer.schedule(new TimerTask(){
-                    public void run(){
-                        WIFI.sendData(0X11,0x45,0xde,0x92);
-                        this.cancel();}},200);
-                timer.schedule(new TimerTask(){
-                    public void run(){
-                        WIFI.sendData(0X12,0,0,0);
-                        this.cancel();}},400);
+                carControl.alarm();
+                Toast.makeText(MainActivity.this,"buttondisplay",Toast.LENGTH_LONG).show();
             break;
             case R.id.buttondisplay:
-                Timer timer2=new Timer();
-                WIFI.sendData(0X10,0xff,0x13,0x01);
-                timer2.schedule(new TimerTask(){
-                    public void run(){
-                        WIFI.sendData(0X11,0xff,0x00,0x00);
-                        this.cancel();}},200);
-                timer2.schedule(new TimerTask(){
-                    public void run(){
-                        WIFI.sendData(0X12,0,0,0);
-                        this.cancel();}},400);
-                Toast.makeText(MainActivity.this,"buttondisplay",Toast.LENGTH_LONG).show();
+                carControl.display();
+                Toast.makeText(MainActivity.this,"立体显示",Toast.LENGTH_LONG).show();
                 break;
             case R.id.buttonsigno:
-                WIFI.sendSignoData(0x01,signo_flage+0x01,0,0);
-                signo_flage = (signo_flage+0x01)%2;
-                Toast.makeText(MainActivity.this,"buttonsigno",Toast.LENGTH_LONG).show();
+                carControl.signo();
+                Toast.makeText(MainActivity.this,"闸道",Toast.LENGTH_LONG).show();
                 break;
-
             case R.id.jump_to:
                 Intent intent = new Intent(MainActivity.this, Main2Activity.class);
                 startActivity(intent);
                 break;
+            case R.id.buttonLED:
+                carControl.LED();
+                Toast.makeText(MainActivity.this,"buttonLED",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.buttondistance:
+                String a=carControl.distance();
+                Toast.makeText(MainActivity.this,"Distance:<<"+a+"   <<",Toast.LENGTH_LONG).show();
+                break;
             case R.id.buttonauto:
                 connect_socket.auto_flag=10;
+
             default:break;
         }
     }

@@ -373,6 +373,8 @@ public class Main2Activity extends AppCompatActivity  implements View.OnClickLis
 
 
 
+    //摄像头移动
+
     private void cameright() {
         XcApplication.executorServicetor.execute(new Runnable() {
             @Override
