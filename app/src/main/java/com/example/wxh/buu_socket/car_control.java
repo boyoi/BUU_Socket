@@ -102,7 +102,7 @@ public class car_control {
         int c = (int)(a-a/100)/10;
 
 
-        WIFI.sendLEDData(0x04,0,(int)a/100,(int)(a-a/100)/10);
+        WIFI.sendLEDData(0x04,0x00,b,c);
 
         String st = ""+b+c;
        return st;

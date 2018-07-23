@@ -12,6 +12,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -182,6 +183,51 @@ public class WIFI {
         }
     }
 
+    public static void sendVoiceData(int S,int M1,int M2,int M3){
+
+
+        String str = "北京联合大学";
+        byte[] srtbyte = null;
+        try {
+            srtbyte = str.getBytes("GBK");
+            String res = new String(srtbyte,"GBK");
+            System.out.println(res);
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
+        final byte [] setbyte = new byte[200];
+        setbyte[0] = intToByte(0XFD);
+        setbyte[1] = intToByte(0x00);
+        setbyte[2] = intToByte(0x00);
+        setbyte[3] = intToByte(0x01);
+        setbyte[4] = intToByte(0X01 );
+        setbyte[5] = intToByte(M3);
+        if(MainActivity.getSocket() != null){
+            MainActivity.executorServicetor.execute(new Runnable() {  //开启线程，传输数据
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    try{
+                        if (MainActivity.getSocket() != null && !MainActivity.getSocket().isClosed()) {
+                            if(bOutputStream == null)
+                                bOutputStream = new DataOutputStream(MainActivity.getSocket().getOutputStream());
+                            bOutputStream.write(setbyte, 0, setbyte.length);
+                            Log.e("send","发送成功");
+                            bOutputStream.flush();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }else{
+            Log.e("send","发送失败");
+        }
+    }
 
     //int转byte
     public static byte intToByte(int value){
