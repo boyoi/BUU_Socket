@@ -183,39 +183,35 @@ public class WIFI {
         }
     }
 
-    public static void sendVoiceData(int S,int M1,int M2,int M3){
+//转换字符发送
 
-
-        String str = "北京联合大学";
-        byte[] srtbyte = null;
-        try {
-            srtbyte = str.getBytes("GBK");
-            String res = new String(srtbyte,"GBK");
-            System.out.println(res);
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    private static byte[] bytesend(byte[] sbyte) {
+        byte[] textbyte = new byte[sbyte.length + 5];
+        textbyte[0] = (byte) 0xFD;
+        textbyte[1] = (byte) (((sbyte.length + 2) >> 8) & 0xff);
+        textbyte[2] = (byte) ((sbyte.length + 2) & 0xff);
+        textbyte[3] = 0x01;// 合成语音命令
+        textbyte[4] = (byte) 0x01;// 编码格式
+        for (int i = 0; i < sbyte.length; i++) {
+            textbyte[i + 5] = sbyte[i];
         }
+        return textbyte;
+    }
 
 
+    public static void sendVoiceData(String str){
 
-        final byte [] setbyte = new byte[200];
-        setbyte[0] = intToByte(0XFD);
-        setbyte[1] = intToByte(0x00);
-        setbyte[2] = intToByte(0x00);
-        setbyte[3] = intToByte(0x01);
-        setbyte[4] = intToByte(0X01 );
-        setbyte[5] = intToByte(M3);
-        if(MainActivity.getSocket() != null){
-            MainActivity.executorServicetor.execute(new Runnable() {  //开启线程，传输数据
+        try{
+           final byte[]sbyte = bytesend(str.getBytes("GBK"));
+
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    // TODO Auto-generated method stub
                     try{
                         if (MainActivity.getSocket() != null && !MainActivity.getSocket().isClosed()) {
                             if(bOutputStream == null)
                                 bOutputStream = new DataOutputStream(MainActivity.getSocket().getOutputStream());
-                            bOutputStream.write(setbyte, 0, setbyte.length);
+                            bOutputStream.write(sbyte, 0, sbyte .length);
                             Log.e("send","发送成功");
                             bOutputStream.flush();
                         }
@@ -223,10 +219,15 @@ public class WIFI {
                         e.printStackTrace();
                     }
                 }
-            });
-        }else{
-            Log.e("send","发送失败");
+            }).start();
+
+     //      WIFI.send_voice(sbyte);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
+
+
     }
 
     //int转byte

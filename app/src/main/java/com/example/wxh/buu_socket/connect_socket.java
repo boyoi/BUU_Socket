@@ -3,14 +3,12 @@ package com.example.wxh.buu_socket;
 import com.example.wxh.buu_socket.WIFI;
 
 
+
 public class connect_socket {
 
     car_control control = new car_control();
-    public void BEEP(boolean i)
-    {
-        if(i) WIFI.sendData(0x30, 1, 0, 0);
-        else WIFI.sendData(0x30, 0, 0, 0);
-    }
+
+
     public int auto_flag=0;
     Thread full_auto = new Thread(new Runnable() {
         @Override
@@ -26,17 +24,13 @@ public class connect_socket {
     });
 
 
-
-
-
     public void auto_main()
     {
         switch (auto_flag)
         {
             case 10:
-//                BEEP(true);
 //                delay_ms(500);
-//                BEEP(false);
+                WIFI.sendVoiceData("吴祉璇大佬");
                 control.car_go();
 
                 control.findway();
@@ -48,6 +42,7 @@ public class connect_socket {
                 control.findway();
 
                 control.car_go();
+                WIFI.sendVoiceData("左转");
                 control.car_left();
 
 
@@ -58,17 +53,20 @@ public class connect_socket {
                 control.findway();
 
                 control.car_go();
+                WIFI.sendVoiceData("我还是左转");
                 control.car_left();
 
                 control.findway();
 
 
                 control.car_go();
+                WIFI.sendVoiceData("我依旧左转");
                 control.car_left();
 
                 control.findway();
 
                 control.car_go();
+                WIFI.sendVoiceData("哎，我右转了");
                 control.car_right();
 
                 control.findway();
