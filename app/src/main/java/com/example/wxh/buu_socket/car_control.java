@@ -11,7 +11,7 @@ public class car_control {
     int light_lr_flage = 0x01;
     int signo_flage = 0x01;
     int LED_flage = 0x01;
-
+    int WirelessCharging_flage = 0x01;
 
 
     public void car_go(){
@@ -101,14 +101,46 @@ public class car_control {
         int b = (int)a/1000;
         int c = (int)(a-a/100)/10;
 
-
         WIFI.sendLEDData(0x04,0x00,b,c);
-
         String st = ""+b+c;
        return st;
+    }
+    public void wirelesscharging(){
+        WIFI.sendSignoData(0x01,WirelessCharging_flage,0,0);
+        WirelessCharging_flage = (WirelessCharging_flage+0x01)%2;
+    }
+
+    public  void TrafficLight(){
+        Timer timer3=new Timer();
+                WIFI.sendTrafficLightData(0x01,0x00,0x00,0x00);
+
+        timer3.schedule(new TimerTask(){
+            public void run(){
+                WIFI.sendTrafficLightData(0x02,0x01,0x00,0x00);
+                this.cancel();}},300);
+        if(WIFI.RecDataArrey[2]!=0X07){
+            WIFI.sendVoiceData("红色灯");
+            return;
+        }
+
+        timer3.schedule(new TimerTask(){
+            public void run(){
+                WIFI.sendTrafficLightData(0x02,0x02,0x00,0x00);
+                this.cancel();}},600);
+        if(WIFI.RecDataArrey[2]!=0X07){
+            WIFI.sendVoiceData("绿色灯");
+            return;
+        }
+        timer3.schedule(new TimerTask(){
+            public void run(){
+                WIFI.sendTrafficLightData(0x02,0x03,0x00,0x00);
+                this.cancel();}},900);
+        if(WIFI.RecDataArrey[2]!=0X07){
+            WIFI.sendVoiceData("黄色灯");
+            return;
+        }
 
 
     }
-
 
 }

@@ -30,7 +30,7 @@ public class connect_socket {
         {
             case 10:
 //                delay_ms(500);
-                WIFI.sendVoiceData("吴祉璇大佬");
+                WIFI.sendVoiceData("祉璇号启动");
                 control.car_go();
 
                 control.findway();
@@ -42,6 +42,7 @@ public class connect_socket {
                 control.findway();
 
                 control.car_go();
+                control.wirelesscharging();
                 WIFI.sendVoiceData("左转");
                 control.car_left();
 
