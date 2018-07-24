@@ -255,6 +255,44 @@ public class WIFI {
     }
 
 
+
+
+    public static void sendTFTData(int S,int M1,int M2,int M3){
+        final byte [] setbyte = new byte[8];
+        int temp = (S + M1 + M2 + M3) % 256;
+        setbyte[0] = intToByte(0x55);
+        setbyte[1] = intToByte(0x0b);
+        setbyte[2] = intToByte(S);
+        setbyte[3] = intToByte(M1);
+        setbyte[4] = intToByte(M2);
+        setbyte[5] = intToByte(M3);
+        setbyte[6] = intToByte(temp);
+        setbyte[7] = intToByte(0xbb);
+        if(MainActivity.getSocket() != null){
+            MainActivity.executorServicetor.execute(new Runnable() {  //开启线程，传输数据
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    try{
+                        if (MainActivity.getSocket() != null && !MainActivity.getSocket().isClosed()) {
+                            if(bOutputStream == null)
+                                bOutputStream = new DataOutputStream(MainActivity.getSocket().getOutputStream());
+                            bOutputStream.write(setbyte, 0, setbyte.length);
+                            Log.e("send","发送成功");
+                            bOutputStream.flush();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }else{
+            Log.e("send","发送失败");
+        }
+    }
+
+
+
 //转换字符发送
 
     private static byte[] bytesend(byte[] sbyte) {
